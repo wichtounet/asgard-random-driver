@@ -25,7 +25,7 @@ debug: debug_random_driver
 all: release release_debug debug
 
 run: release
-	sudo ./release/bin/random_driver
+	./release/bin/random_driver
 
 remote_clean:
 	sshpass -p ${password} ssh ${user}@${pi} "cd ${dir} && make clean"
