@@ -42,25 +42,25 @@ int source_id = -1;
 int sensor_id = -1;
 
 void stop(){
-	std::cout << "asgard:random: stop the driver" << std::endl;
+    std::cout << "asgard:random: stop the driver" << std::endl;
 
-	// Unregister the sensor, if necessary
-	if(sensor_id >= 0){
-		auto nbytes = snprintf(write_buffer, buffer_size, "UNREG_SENSOR %d %d", source_id, sensor_id);
-		sendto(socket_fd, write_buffer, nbytes, 0, (struct sockaddr *) &server_address, sizeof(struct sockaddr_un));
-	}
+    // Unregister the sensor, if necessary
+    if(sensor_id >= 0){
+        auto nbytes = snprintf(write_buffer, buffer_size, "UNREG_SENSOR %d %d", source_id, sensor_id);
+        sendto(socket_fd, write_buffer, nbytes, 0, (struct sockaddr *) &server_address, sizeof(struct sockaddr_un));
+    }
 
-	// Unregister the source, if necessary
-	if(source_id >= 0){
-		auto nbytes = snprintf(write_buffer, buffer_size, "UNREG_SOURCE %d", source_id);
-		sendto(socket_fd, write_buffer, nbytes, 0, (struct sockaddr *) &server_address, sizeof(struct sockaddr_un));
-	}
+    // Unregister the source, if necessary
+    if(source_id >= 0){
+        auto nbytes = snprintf(write_buffer, buffer_size, "UNREG_SOURCE %d", source_id);
+        sendto(socket_fd, write_buffer, nbytes, 0, (struct sockaddr *) &server_address, sizeof(struct sockaddr_un));
+    }
 
-	// Unlink the client socket
-	unlink(client_socket_path);
+    // Unlink the client socket
+    unlink(client_socket_path);
 
-	// Close the socket
-	close(socket_fd);
+    // Close the socket
+    close(socket_fd);
 }
 
 void terminate(int){
@@ -133,9 +133,9 @@ int main(){
     while(true){
         int value = distribution(gen);
 
-	// Send the data
-	nbytes = snprintf(write_buffer, buffer_size, "DATA %d %d %d", source_id, sensor_id, value);
-	sendto(socket_fd, write_buffer, nbytes, 0, (struct sockaddr *) &server_address, sizeof(struct sockaddr_un));
+        // Send the data
+        nbytes = snprintf(write_buffer, buffer_size, "DATA %d %d %d", source_id, sensor_id, value);
+        sendto(socket_fd, write_buffer, nbytes, 0, (struct sockaddr *) &server_address, sizeof(struct sockaddr_un));
 
         // Wait some time before messages
         usleep(delay_ms * 1000);
