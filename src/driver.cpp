@@ -18,13 +18,13 @@
 
 namespace {
 
+const std::size_t UNIX_PATH_MAX = 108;
+const std::size_t buffer_size = 4096;
+
 // Configuration (this should be in a configuration file)
 const char* server_socket_path = "/tmp/asgard_socket";
 const char* client_socket_path = "/tmp/asgard_random_socket";
 const std::size_t delay_ms = 5000;
-
-const std::size_t UNIX_PATH_MAX = 108;
-const std::size_t buffer_size = 4096;
 
 //Buffer
 char write_buffer[buffer_size];
@@ -41,7 +41,7 @@ struct sockaddr_un server_address;
 int source_id = -1;
 int sensor_id = -1;
 
-void stop(){ 
+void stop(){
 	std::cout << "asgard:random: stop the driver" << std::endl;
 
 	// Unregister the sensor, if necessary
@@ -65,7 +65,7 @@ void stop(){
 
 void terminate(int){
     stop();
-    
+
     std::exit(0);
 }
 
@@ -132,7 +132,7 @@ int main(){
 
     while(true){
         int value = distribution(gen);
-    
+
 	// Send the data
 	nbytes = snprintf(write_buffer, buffer_size, "DATA %d %d %d", source_id, sensor_id, value);
 	sendto(socket_fd, write_buffer, nbytes, 0, (struct sockaddr *) &server_address, sizeof(struct sockaddr_un));
