@@ -1,11 +1,6 @@
 CXX=g++
 LD=g++
 
-user=pi
-pi=192.168.20.161
-password=raspberry
-dir=/home/${user}/asgard/asgard-random-driver/
-
 default: release
 
 .PHONY: default release debug all clean
@@ -13,7 +8,17 @@ default: release
 include make-utils/flags-pi.mk
 include make-utils/cpp-utils.mk
 
-CXX_FLAGS += -pedantic
+pi.conf:
+	echo "user=pi" > pi.conf
+	echo "pi=192.168.20.161" >> pi.conf
+	echo "password=raspberry" >> pi.conf
+	echo "dir=/home/pi/asgard/asgard-random-driver/" >> pi.conf
+
+conf: pi.conf
+
+include pi.conf
+
+CXX_FLAGS += -pedantic -Iasgard-lib/include/
 
 $(eval $(call auto_folder_compile,src))
 $(eval $(call auto_add_executable,random_driver))
